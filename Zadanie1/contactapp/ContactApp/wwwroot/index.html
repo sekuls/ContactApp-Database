@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ContactApp</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+
+  <!-- header -->
+  <div class="app-header">
+    <h1>Contact App :)</h1>
+    <div class="d-flex align-items-center gap-2">
+      <span id="info-user" class="hidden text-success"></span>
+      <button onclick="showList()" class="btn btn-outline-secondary btn-sm">List</button>
+      <span id="auth-buttons">
+        <button onclick="showLogin()" class="btn btn-primary btn-sm">Login</button>
+      </span>
+    </div>
+  </div>
+
+  <!-- view contact list -->
+  <div id="view-list">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">All Contacts</h5>
+      <button id="btn-add" onclick="showForm(null)"
+              class="btn btn-success btn-sm hidden">+ Add Contact</button>
+    </div>
+    <div class="bg-white rounded shadow-sm">
+      <table class="table table-hover table-bordered mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Category</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="5" class="text-center">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- view: contact details -->
+  <div id="view-details" class="hidden">
+    <button onclick="showList()" class="btn btn-secondary btn-sm mb-3">
+      &larr; Back to list
+    </button>
+    <div class="card">
+      <div class="card-body">
+        <h4 id="det-name" class="card-title mb-4"></h4>
+        <div class="row">
+          <div class="col-md-6">
+            <p><strong>Email:</strong><br><span id="det-email"></span></p>
+            <p><strong>Phone:</strong><br><span id="det-phone"></span></p>
+            <p><strong>Date of birth:</strong><br><span id="det-dob"></span></p>
+          </div>
+          <div class="col-md-6">
+            <p><strong>Category:</strong><br><span id="det-category"></span></p>
+            <p><strong>Subcategory:</strong><br><span id="det-subcategory"></span></p>
+          </div>
+        </div>
+        <hr>
+        <!-- action buttons-->
+        <div id="action-buttons" class="hidden">
+          <button onclick="editContact()"   class="btn btn-warning btn-sm">Edit</button>
+          <button onclick="deleteContact()" class="btn btn-danger  btn-sm ms-2">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- view: login -->
+  <div id="view-login" class="hidden">
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Login</h5>
+            <div class="mb-3">
+              <label class="form-label">Login</label>
+              <input type="text" id="inp-login" class="form-control" value="admin">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" id="inp-password" class="form-control" value="Admin123!">
+            </div>
+            <button onclick="login()" class="btn btn-primary w-100">Login</button>
+            <div id="error-login" class="text-danger mt-2 hidden">Invalid credentials!</div>
+          </div>
+        </div>
+        <small class="text-muted d-block text-center mt-2">
+          testowy login: admin / Admin123!
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <!-- view: add/edit form -->
+  <div id="view-form" class="hidden">
+    <button onclick="showList()" class="btn btn-secondary btn-sm mb-3">
+      &larr; Back
+    </button>
+    <div class="card">
+      <div class="card-body">
+
+        <h5 id="form-title" class="card-title mb-4">Add Contact</h5>
+        <input type="hidden" id="f-id">
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">First Name *</label>
+            <input type="text" id="f-firstname" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Last Name *</label>
+            <input type="text" id="f-lastname" class="form-control">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Email *</label>
+            <input type="email" id="f-email" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Phone</label>
+            <input type="text" id="f-phone" class="form-control">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">
+              Password *
+              <small class="text-muted">(min 8 chars, uppercase, digit, special char)</small>
+            </label>
+            <input type="password" id="f-password" class="form-control"
+                   placeholder="leave empty to keep current password (when editing)">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" id="f-dob" class="form-control">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">Category *</label>
+            <select id="f-category" class="form-select" onchange="onCategoryChange()">
+              <option value="">-- select --</option>
+            </select>
+          </div>
+
+          <!-- subcategory from dictionary - only worker -->
+          <div class="col-md-4 hidden" id="div-subcategory-dict">
+            <label class="form-label">Subcategory</label>
+            <select id="f-subcategory" class="form-select">
+              <option value="">-- select --</option>
+            </select>
+          </div>
+
+          <!-- custom subcategory - only other -->
+          <div class="col-md-4 hidden" id="div-subcategory-custom">
+            <label class="form-label">Subcategory (type below)</label>
+            <input type="text" id="f-custom-subcategory" class="form-control"
+                   placeholder="e.g. neighbor, doctor...">
+          </div>
+        </div>
+
+        <div id="error-form" class="alert alert-danger hidden"></div>
+
+        <button onclick="saveContact()" class="btn btn-success">Save</button>
+        <button onclick="showList()"    class="btn btn-secondary ms-2">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- app!! -->
+
+<script src="app.js"></script>
+</body>
+</html>

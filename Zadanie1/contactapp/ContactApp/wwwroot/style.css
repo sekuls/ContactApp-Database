@@ -1,0 +1,49 @@
+﻿body {
+    padding: 20px;
+    background: #f0f2f5;
+    font-family: Arial, sans-serif;
+}
+
+#app {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.contact-row {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.contact-row:hover {
+    background-color: #dde1e7 !important;
+}
+
+.app-header {
+    background: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-header h1 {
+    font-size: 1.4rem;
+    margin: 0;
+    color: #333;
+}
+
+.card {
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    border: 1px solid #dee2e6;
+}
+
+#info-user {
+    font-size: 0.85rem;
+}
